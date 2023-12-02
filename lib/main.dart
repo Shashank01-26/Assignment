@@ -1,4 +1,5 @@
-import 'package:events/screens/home_screen.dart';
+import 'package:events/screens/home_screen/presentation/home_screen_widget.dart';
+import 'package:events/screens/search_screen/presentation/search_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
             ),
       ),   
       home: HomeScreen(),
+      routes:{
+        '/searchPage' : (context) => const SearchPage(),
+      }
     );
   }
 }
