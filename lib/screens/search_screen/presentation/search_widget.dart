@@ -1,3 +1,4 @@
+import 'package:events/widgets/card_view_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -146,6 +147,9 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                 ),
+              ),
+              Expanded(
+                  child: EventCards()
               ),
             ],
           ),
