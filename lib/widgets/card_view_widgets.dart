@@ -46,90 +46,96 @@ class _EventCardsState extends State<EventCards> {
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Container(
-              height: MediaQuery.of(context).devicePixelRatio * 40,
-              width: MediaQuery.of(context).devicePixelRatio * 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                gradient: const LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 255, 255, 255),
-                    Color.fromARGB(255, 255, 255, 255),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      '${data[index]['organiser_icon']}',
-                      width: 126,
-                      height: 179,
-                      fit: BoxFit.fill,
-                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                        return Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          child: Icon(
-                            Icons.error_outline
-                          ),
-                        );
-                      },
-                    ),
+            child: InkWell(
+                onTap: (){
+                Navigator.pushNamed(context,'/eventDetails',
+                arguments: data[index]);
+                },
+              child: Container(
+                height: MediaQuery.of(context).devicePixelRatio * 65,
+                width: MediaQuery.of(context).devicePixelRatio * 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 255, 255, 255),
+                      Color.fromARGB(255, 255, 255, 255),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 10, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 0, 5),
-                          child: Text(
-                            DateFormat('yyyy-MM-dd').format(DateTime.parse(data[index]['date_time'])),
-                            style:TextStyle(
-                                fontSize:15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.lightBlueAccent
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        '${data[index]['organiser_icon']}',
+                        width: 106,
+                        height: 179,
+                        fit: BoxFit.fill,
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                          return Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                            child: Icon(
+                              Icons.error_outline
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 10, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 0, 5),
+                            child: Text(
+                              DateFormat('yyyy-MM-dd').format(DateTime.parse(data[index]['date_time'])),
+                              style:TextStyle(
+                                  fontSize:15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.lightBlueAccent
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                            data[index]['title'] ?? '',
-                        style:const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold
-                        ),
-                        ),
-                        Padding(
-                          padding:  EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:[
-                              Icon(
-                                Icons.place,
-                                size: 14,
-                              ),
-                              Text(
-                                data[index]['venue_name'] +" \n "+ data[index]['venue_city'],
-                              style:TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                color:Colors.grey
-                              ),
-                              ),
-                            ]
+                          Text(
+                              data[index]['title'] ?? '',
+                          style:const TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold
                           ),
-                        ),
+                          ),
+                          Padding(
+                            padding:  EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children:[
+                                Icon(
+                                  Icons.place,
+                                  size: 14,
+                                ),
+                                Text(
+                                  data[index]['venue_name'] +" \n "+ data[index]['venue_city'],
+                                style:TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color:Colors.grey
+                                ),
+                                ),
+                              ]
+                            ),
+                          ),
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

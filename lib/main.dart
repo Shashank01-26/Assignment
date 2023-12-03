@@ -1,3 +1,4 @@
+import 'package:events/screens/event_details_screen/event_details_widget.dart';
 import 'package:events/screens/home_screen/presentation/home_screen_widget.dart';
 import 'package:events/screens/search_screen/presentation/search_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       home: HomeScreen(),
       routes:{
         '/searchPage' : (context) => const SearchPage(),
+        '/eventDetails' : (context) =>  EventDetailsWidget(id: 1),
       }
     );
   }
