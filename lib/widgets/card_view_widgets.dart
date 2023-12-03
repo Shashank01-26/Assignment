@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -49,7 +50,7 @@ class _EventCardsState extends State<EventCards> {
             child: InkWell(
                 onTap: (){
                 Navigator.pushNamed(context,'/eventDetails',
-                arguments: data[index]);
+                arguments: data[index]['id']);
                 },
               child: Container(
                 height: MediaQuery.of(context).devicePixelRatio * 65,
@@ -69,20 +70,12 @@ class _EventCardsState extends State<EventCards> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.network(
-                        '${data[index]['organiser_icon']}',
-                        width: 106,
-                        height: 179,
-                        fit: BoxFit.fill,
-                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                          return Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                            child: Icon(
-                              Icons.error_outline
-                            ),
-                          );
-                        },
+                      borderRadius: BorderRadius.circular(0),
+                      child:CachedNetworkImage(
+                        imageUrl:data[index]['organiser_icon'],
+                        width: 142,
+                        height: 200,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Padding(

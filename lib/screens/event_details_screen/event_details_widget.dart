@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class EventDetailsWidget extends StatefulWidget {
     final int id;
@@ -47,174 +49,169 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
       key: scaffoldKey,
       body: Stack(
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(0),
-                child: Image.network(
-                  '${eventData['banner_image']}',
-                  width: MediaQuery.of(context).devicePixelRatio * 80,
-                  height: MediaQuery.of(context).devicePixelRatio * 95,
-                  fit: BoxFit.cover,
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(0),
+                  child:CachedNetworkImage(
+                        imageUrl:eventData['banner_image'],
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2.5,
+                        fit: BoxFit.contain,
+                      ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 15),
-                child: Text(
-                  eventData['title'],
-                  style: GoogleFonts.headlandOne(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black,
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 15),
+                  child: Text(
+                    (eventData['title']) ?? 'Coming soon...',
+                    style: GoogleFonts.headlandOne(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: Image.network(
-                          '${eventData['organiser_icon']}',
-                          fit: BoxFit.cover,
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Image.network(
+                            '${eventData['organiser_icon']}',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              eventData['organiser_name'],
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              (eventData['organiser_name']) ?? 'Organizer to be disclosed',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          const Text(
-                            "Organizer",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color:Colors.grey,
+                            const Text(
+                              "Organizer",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:Colors.grey,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(
-                        Icons.calendar_today,
-                        color: Colors.grey,
-                        size: 35,
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.grey,
+                          size: 30,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              'Date',
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                            DateFormat('yyyy-MM-dd').format(DateTime.parse(eventData['date_time'])),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          Text(
-                            'Event Date',
-                            style: TextStyle(
-                              fontSize: 12,
+                            Text(
+                              'Event Date',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:Colors.grey
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.grey,
-                        size: 35,
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.grey,
+                          size: 30,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              'Location',
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              (eventData['venue_name'] + ", " + eventData['venue_city']) ?? 'Not yet decided',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          Text(
-                            'Event Location',
-                            style: TextStyle(
-                              fontSize: 12,
+                            Text(
+                              'Event Location',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:Colors.grey,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Text(
+                    "About Event",
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Text(
-                  "About Event",
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Text(
-                  'Event description goes here...',
-                  style: TextStyle(
-                    fontSize: 14,
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Text(
+                    (eventData['description']) ?? "No description to show",
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
@@ -230,11 +227,11 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                       IconButton(
                         icon: Icon(
                           Icons.arrow_back,
-                          color: Colors.white,
+                          color: Colors.black,
                           size: 24,
                         ),
                         onPressed: () {
-                          print('Back button pressed ...');
+                         Navigator.pop(context);
                         },
                       ),
                       Padding(
@@ -242,7 +239,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                         child: Text(
                           'Event Details',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -255,7 +252,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                   child: IconButton(
                     icon: Icon(
                       Icons.bookmark,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 24,
                     ),
                     onPressed: () {
@@ -270,9 +267,9 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.14,
+              height: MediaQuery.of(context).size.height * 0.24,
               decoration: BoxDecoration(
-                color: Color(0x3AFFFFFF),
+                color: Color(0xB3FFFFFF),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -282,15 +279,17 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                       print('Book Now button pressed ...');
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF284CCA),
+                      backgroundColor: Color(0xFF284CCA),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 24),
+                      fixedSize: Size(150,35),
                     ),
                     child: Text(
                       'Book Now',
                       style: TextStyle(
+                        fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
                     ),

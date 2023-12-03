@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:events/screens/event_details_screen/event_details_widget.dart';
 import 'package:events/screens/home_screen/presentation/home_screen_widget.dart';
 import 'package:events/screens/search_screen/presentation/search_widget.dart';
@@ -7,13 +9,37 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+late int data;
+  void getEventList() async {
+    final response = await http.get(Uri.parse(
+        "https://sde-007.api.assignment.theinternetfolks.works/v1/event"));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print(response.body);
+      final List<dynamic> eventID = jsonResponse['content']['data'];
+      setState(() {
+        data = eventID[0]['id'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEventList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(   
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
             appBarTheme: const AppBarTheme(
@@ -23,11 +49,11 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-      ),   
+      ),
       home: HomeScreen(),
       routes:{
         '/searchPage' : (context) => const SearchPage(),
-        '/eventDetails' : (context) =>  EventDetailsWidget(id: 1),
+        '/eventDetails' : (context) =>  EventDetailsWidget(id: data),
       }
     );
   }
