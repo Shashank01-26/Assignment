@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:events/widgets/card_view_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:events/screens/event_details_screen/event_details_widget.dart';
 import 'package:events/screens/home_screen/presentation/home_screen_widget.dart';
@@ -17,16 +18,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-late int data;
+List<dynamic> data = [];
   void getEventList() async {
     final response = await http.get(Uri.parse(
         "https://sde-007.api.assignment.theinternetfolks.works/v1/event"));
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       print(response.body);
-      final List<dynamic> eventID = jsonResponse['content']['data'];
       setState(() {
-        data = eventID[0]['id'];
+        final List<dynamic> eventID = jsonResponse['content']['data'];
       });
     }
   }
@@ -53,7 +53,7 @@ late int data;
       home: HomeScreen(),
       routes:{
         '/searchPage' : (context) => const SearchPage(),
-        '/eventDetails' : (context) =>  EventDetailsWidget(id: data),
+        '/eventDetails' : (context) =>  EventDetailsWidget(),
       }
     );
   }

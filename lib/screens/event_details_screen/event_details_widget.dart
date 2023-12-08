@@ -6,9 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailsWidget extends StatefulWidget {
-    final int id;
 
-  const EventDetailsWidget({Key? key,required this.id}) : super(key: key);
+
+  const EventDetailsWidget({Key? key}) : super(key: key);
 
   @override
   _EventDetailsWidgetState createState() => _EventDetailsWidgetState();
@@ -16,34 +16,31 @@ class EventDetailsWidget extends StatefulWidget {
 
 class _EventDetailsWidgetState extends State<EventDetailsWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late Map<String,dynamic> eventData;
+   Map<String,dynamic>? eventData;
 
   @override
   void initState() {
     super.initState();
-    getEventDetails();
+    int data = ModalRoute.of(context)?.settings.arguments as int;
+    getEventDetails(data);
   }
 
-  void getEventDetails() async {
+  void getEventDetails(data) async {
     final response = await http.get(
-      Uri.parse("https://sde-007.api.assignment.theinternetfolks.works/v1/event/${widget.id}"),
+      Uri.parse("https://sde-007.api.assignment.theinternetfolks.works/v1/event/${data}"),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       print(response.body);
       setState(() {
-        eventData = jsonResponse['content']['data'];
+        eventData = jsonResponse['content']['data'][data];
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if(eventData == null){
-      return Center(child:CircularProgressIndicator());
-    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -57,7 +54,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(0),
                   child:CachedNetworkImage(
-                        imageUrl:eventData['banner_image'],
+                        imageUrl:eventData?['banner_image'],
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height / 2.5,
                         fit: BoxFit.contain,
@@ -66,7 +63,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                 Padding(
                   padding: EdgeInsets.only(left: 10, top: 15),
                   child: Text(
-                    (eventData['title']) ?? 'Coming soon...',
+                    (eventData?['title']) ?? 'Coming soon...',
                     style: GoogleFonts.headlandOne(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -87,7 +84,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                             shape: BoxShape.circle,
                           ),
                           child: Image.network(
-                            '${eventData['organiser_icon']}',
+                            '${eventData?['organiser_icon']}',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -98,7 +95,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              (eventData['organiser_name']) ?? 'Organizer to be disclosed',
+                              (eventData?['organiser_name']) ?? 'Organizer to be disclosed',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -135,7 +132,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                            DateFormat('yyyy-MM-dd').format(DateTime.parse(eventData['date_time'])),
+                            DateFormat('yyyy-MM-dd').format(DateTime.parse(eventData?['date_time'])),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -172,7 +169,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              (eventData['venue_name'] + ", " + eventData['venue_city']) ?? 'Not yet decided',
+                              (eventData?['venue_name'] + ", " + eventData?['venue_city']) ?? 'Not yet decided',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -204,7 +201,7 @@ class _EventDetailsWidgetState extends State<EventDetailsWidget> {
                 Padding(
                   padding: EdgeInsets.only(left: 10, top: 10),
                   child: Text(
-                    (eventData['description']) ?? "No description to show",
+                    (eventData?['description']) ?? "No description to show",
                     style: TextStyle(
                       fontSize: 14,
                     ),

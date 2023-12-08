@@ -49,7 +49,8 @@ class _EventCardsState extends State<EventCards> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: InkWell(
                 onTap: (){
-                Navigator.pushNamed(context,'/eventDetails',
+                  print(data[index]['id']);
+                  Navigator.pushNamed(context,'/eventDetails',
                 arguments: data[index]['id']);
                 },
               child: Container(
