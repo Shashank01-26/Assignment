@@ -36,6 +36,10 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
+  void _performSearch(String query){
+    _model.searchEvents(query);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -113,6 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                               controller: _model.textController,
                               focusNode: _model.textFieldFocusNode,
                               autofocus: true,
+                              onChanged: (query) => _performSearch(query),
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: "Search...",
@@ -151,7 +156,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               Expanded(
-                  child: EventCards()
+                  child: EventCards(events: _model.filteredEvents)
               ),
             ],
           ),
