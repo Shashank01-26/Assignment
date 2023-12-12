@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:events/screens/search_screen/presentation/search_model.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void _performSearch(String query){
+  void _performSearch(String query) {
     _model.searchEvents(query);
   }
 
@@ -155,8 +156,19 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
               ),
-              Expanded(
-                  child: EventCards(events: _model.filteredEvents)
+              ChangeNotifierProvider<SearchPageModel>.value(
+                value: _model,
+                builder: (context, child) {
+                  return Consumer<SearchPageModel>(
+                    builder: (context, value, child) {
+                      return Expanded(
+                          child: EventCards(
+                        events: value.filteredEvents,
+                        key: ValueKey(value.filteredEvents.hashCode),
+                      ));
+                    },
+                  );
+                },
               ),
             ],
           ),

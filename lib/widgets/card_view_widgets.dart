@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 class EventCards extends StatefulWidget {
   final List<dynamic> events;
 
-  const EventCards({Key? key,required this.events});
+  const EventCards({Key? key, required this.events}) : super(key: key);
 
   @override
   State<EventCards> createState() => _EventCardsState();
 }
 
 class _EventCardsState extends State<EventCards> {
-  List<dynamic> data = [];
+  late List<dynamic> data = widget.events;
 
   void getEventList() async {
     final response = await http.get(Uri.parse(
@@ -31,7 +31,7 @@ class _EventCardsState extends State<EventCards> {
   @override
   void initState() {
     super.initState();
-    getEventList();
+    if (data.isEmpty) getEventList();
   }
 
   @override
@@ -50,11 +50,11 @@ class _EventCardsState extends State<EventCards> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: InkWell(
-                onTap: (){
-                  print(data[index]['id']);
-                  Navigator.pushNamed(context,'/eventDetails',
-                arguments: data[index]['id']);
-                },
+              onTap: () {
+                print(data[index]['id']);
+                Navigator.pushNamed(context, '/eventDetails',
+                    arguments: data[index]['id']);
+              },
               child: Container(
                 height: MediaQuery.of(context).devicePixelRatio * 65,
                 width: MediaQuery.of(context).devicePixelRatio * 50,
@@ -74,59 +74,59 @@ class _EventCardsState extends State<EventCards> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(0),
-                      child:CachedNetworkImage(
-                        imageUrl:data[index]['organiser_icon'],
+                      child: CachedNetworkImage(
+                        imageUrl: data[index]['organiser_icon'],
                         width: 142,
                         height: 200,
                         fit: BoxFit.cover,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 10, 0),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(20, 0, 10, 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 0, 5),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                5, 0, 0, 5),
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(DateTime.parse(data[index]['date_time'])),
-                              style:TextStyle(
-                                  fontSize:15.0,
+                              DateFormat('yyyy-MM-dd').format(
+                                  DateTime.parse(data[index]['date_time'])),
+                              style: TextStyle(
+                                  fontSize: 15.0,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.lightBlueAccent
-                              ),
+                                  color: Colors.lightBlueAccent),
                             ),
                           ),
                           Text(
-                              data[index]['title'] ?? '',
-                          style:const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold
-                          ),
+                            data[index]['title'] ?? '',
+                            style: const TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
                           ),
                           Padding(
-                            padding:  EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
                             child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:[
-                                Icon(
-                                  Icons.place,
-                                  size: 14,
-                                ),
-                                Text(
-                                  data[index]['venue_name'] +" \n "+ data[index]['venue_city'],
-                                style:TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color:Colors.grey
-                                ),
-                                ),
-                              ]
-                            ),
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    size: 14,
+                                  ),
+                                  Text(
+                                    data[index]['venue_name'] +
+                                        " \n " +
+                                        data[index]['venue_city'],
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey),
+                                  ),
+                                ]),
                           ),
-
                         ],
                       ),
                     ),
