@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:events/widgets/card_view_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +34,10 @@ class _SearchPageState extends State<SearchPage> {
     _model.dispose();
 
     super.dispose();
+  }
+
+  void _performSearch(String query){
+    _model.searchEvents(query);
   }
 
   @override
@@ -111,6 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                               controller: _model.textController,
                               focusNode: _model.textFieldFocusNode,
                               autofocus: true,
+                              onChanged: (query) => _performSearch(query),
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: "Search...",
@@ -149,7 +156,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               Expanded(
-                  child: EventCards()
+                  child: EventCards(events: _model.filteredEvents)
               ),
             ],
           ),

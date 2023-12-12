@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-List<dynamic> data = [];
+  List<dynamic> data = [];
   void getEventList() async {
     final response = await http.get(Uri.parse(
         "https://sde-007.api.assignment.theinternetfolks.works/v1/event"));
@@ -40,22 +40,27 @@ List<dynamic> data = [];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              color: Colors.transparent,
-              elevation:0,
-              iconTheme: IconThemeData(
-                color: Colors.black,
-              ),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            color: Colors.transparent,
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.black,
             ),
-      ),
-      home: HomeScreen(),
-      routes:{
-        '/searchPage' : (context) => const SearchPage(),
-        '/eventDetails' : (context) =>  EventDetailsWidget(),
-      }
-    );
+          ),
+        ),
+        home: HomeScreen(),
+        routes: {
+          '/searchPage': (context) => const SearchPage(),
+          '/eventDetails': (context) => Builder(
+                builder: (context) {
+                  final data =
+                      ModalRoute.of(context)?.settings.arguments as int;
+
+                  return EventDetailsWidget(data: data);
+                },
+              ),
+        });
   }
 }
-

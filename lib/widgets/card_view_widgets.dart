@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class EventCards extends StatefulWidget {
-  const EventCards({Key? key});
+  final List<dynamic> events;
+
+  const EventCards({Key? key,required this.events});
 
   @override
   State<EventCards> createState() => _EventCardsState();
