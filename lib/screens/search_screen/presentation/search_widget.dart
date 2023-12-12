@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:events/widgets/card_view_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
