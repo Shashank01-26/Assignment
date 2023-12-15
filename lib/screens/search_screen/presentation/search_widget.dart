@@ -162,10 +162,14 @@ class _SearchPageState extends State<SearchPage> {
                   return Consumer<SearchPageModel>(
                     builder: (context, value, child) {
                       return Expanded(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
                           child: EventCards(
-                        events: value.filteredEvents,
-                        key: ValueKey(value.filteredEvents.hashCode),
-                      ));
+                            events: value.filteredEvents,
+                            key: ValueKey(value.filteredEvents.hashCode),
+                          ),
+                        ),
+                      );
                     },
                   );
                 },
